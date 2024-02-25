@@ -1,0 +1,71 @@
+Package Structure:
+
+online-banking-system/
+├── src/main/java/
+│   ├── com/yourcompany/
+│   │   ├── accounts/
+│   │   │   ├── Account.java
+│   │   │   ├── SavingAccount.java
+│   │   │   └── LoanAccount.java
+│   │   ├── customers/
+│   │   │   ├── Customer.java
+│   │   │   └── Accountant.java
+│   │   ├── database/
+│   │   │   ├── DatabaseConnection.java
+│   │   │   └── DaoImpl.java (abstract class for DAOs)
+│   │   │       ├── AccountDaoImpl.java
+│   │   │       └── CustomerDaoImpl.java
+│   │   ├── transactions/
+│   │   │   ├── Transaction.java
+│   │   │   └── TransactionHistory.java
+│   │   ├── utils/
+│   │   │   ├── InputUtil.java
+│   │   │   └── ValidationUtil.java
+│   │   └── OnlineBankingSystem.java
+│   └── application.properties
+├── pom.xml
+└── README.md
+
+
+
+
+SQL
+
+DB name -> OnlineBankingDB
+
+CREATE TABLE accounts (
+    account_number INT PRIMARY KEY,
+    customer_id INT FOREIGN KEY REFERENCES customers(customer_id),
+    account_type VARCHAR(20),
+    balance DECIMAL(10,2),
+    status VARCHAR(20)
+);
+
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    address VARCHAR(100),
+    contact_number VARCHAR(20),
+    username VARCHAR(20) UNIQUE,
+    password VARCHAR(255),
+    role VARCHAR(20)
+);
+
+CREATE TABLE transactions (
+    transaction_id INT PRIMARY KEY,
+    account_number INT FOREIGN KEY REFERENCES accounts(account_number),
+    transaction_type VARCHAR(20),
+    amount DECIMAL(10,2),
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE loan_applications (
+    application_id INT PRIMARY KEY,
+    account_number INT FOREIGN KEY REFERENCES accounts(account_number),
+    loan_amount DECIMAL(10,2),
+    interest_rate DECIMAL(5,2),
+    repayment_period INT,
+    status VARCHAR(20)
+);
+
+
